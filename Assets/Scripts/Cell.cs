@@ -1,8 +1,9 @@
 using Assets.Scripts.Tools;
 using System;
 using System.Linq;
+using JetBrains.Annotations;
+using Tools;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace Assets.Scripts
 {
@@ -25,9 +26,9 @@ namespace Assets.Scripts
         [Header("State info")]
         [SerializeField] private bool _isEmpty;
         [SerializeField] private CellTypeE _cellType;
-        [SerializeField] private bool _canTowerPlace;
-        [SerializeField] private bool _canMinåPlace;
-        [SerializeField] private bool _canWarriorMovingThis;
+        [SerializeField] [UsedImplicitly] private bool _canTowerPlace;
+        [SerializeField] [UsedImplicitly] private bool _canMinåPlace;
+        [SerializeField] [UsedImplicitly] private bool _canWarriorMovingThis;
         [SerializeField] private bool _canSelectThis;
 
         private GameObject _unit;

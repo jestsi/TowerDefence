@@ -1,86 +1,97 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using Assets.Scripts;
+using Unity.VisualScripting;
 using UnityEngine;
 
-namespace Assets.Scripts.Tools
+namespace Tools
 {
     public class LevelHandler : MonoBehaviour
     {
-        [Header("Warrior - 1")]
-        [SerializeField] private GameObject _warriorPrefab;
-        [SerializeField] private float _secondsForSpawn;
-        [SerializeField] private Transform _spawnTransformPosition;
-        [SerializeField] private int _countWarriors;
-
+        [Header("Warriors")] 
+        [SerializeField] private WarriorType[] _warriorTypes;
+        
         private static bool _isPaused;
         private static Timer _timer;
         private Ray _ray;
 
         public static bool IsPaused { get => _isPaused; set => _isPaused = value; }
 
-        private void Start()
+        private void Awake()
         {
-            _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
             _isPaused = false;
-            _warriorPrefab.transform.position = _spawnTransformPosition.position;
 
             _timer = gameObject.AddComponent<Timer>();
-            int currentCountWarriors = 0;
-            Coroutine corout = null;
-            corout = _timer.StartTimer(() => {
-                var disableBadClosure = currentCountWarriors;
-                if (disableBadClosure >= _countWarriors)
-                    StopCoroutine(corout);
-                Instantiate(_warriorPrefab);
-                ++currentCountWarriors;
-            }, _secondsForSpawn);
+        }
 
+        private void Start()
+        {
+            StartSpawnWarriors();
+
+            HideHideblesObjects();
+        }
+
+        private static void HideHideblesObjects()
+        {
             foreach (var obj in GameObject.FindGameObjectsWithTag("Hideble"))
             {
                 if (obj.TryGetComponent(out MeshRenderer rend))
                     rend.enabled = false;
             }
         }
+        
+        private void StartSpawnWarriors()
+        {
+            for (var i = 0; i < _warriorTypes.Length; i++)
+            {
+                StartCoroutine(nameof(SpawnWarrior), _warriorTypes[i]);
+            }
+        }
 
-        private void OnDrawGizmos()
+        private IEnumerator SpawnWarrior(WarriorType war)
+        {
+            var countSpawnWarriors = 0;
+            
+            while (war.CountWarriors > countSpawnWarriors)
+            {
+                yield return new WaitForSeconds(war.SecondsForSpawn);
+
+                Instantiate(war.WarriorPrefab, war.SpawnPosition, war.WarriorPrefab.transform.rotation);
+
+                ++countSpawnWarriors;
+            }
+        }
+        
+        /*private void OnDrawGizmos()
         {
             Gizmos.color = Color.white;
             _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             _ray.direction *= 100f;
             Gizmos.DrawRay(_ray);
-        }
+        }*/
 
         private void Update()
         {
-            _ray.direction *= 10;
+            _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RayMouse();
         }
 
+        // ReSharper disable Unity.PerformanceAnalysis
         private void RayMouse ()
         {
-            if (Physics.Raycast(_ray, out var hit, 100f, 3))
+            if (!Physics.Raycast(_ray, out var hit, 100f, 3)) return;
+            
+            if (hit.transform.TryGetComponent(out Cell cell))
             {
-                if (hit.transform.TryGetComponent(out Cell cell))
-                {
-                    cell.ChangeColor(cell.HoverColor);
-                    _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    Debug.Log("msg");
-                    return;
-
-                }
-                else
-                {
-                    _ray.origin = hit.transform.position;
-                    Debug.Log("msg2");
-                    return;
-                }
-            } else
-            {
-                _ray.origin = hit.transform.position;
-                Debug.Log("msg3");
+                cell.ChangeColor(cell.HoverColor);
+                _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                Debug.Log("msg");
                 return;
-
             }
+
+            _ray.origin = hit.transform.position;
+            Debug.Log("msg2");
         }
     }
 }

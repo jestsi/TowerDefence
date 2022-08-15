@@ -1,55 +1,57 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthHandler : MonoBehaviour
+namespace Units
 {
-    [Header("Health stats")]
-    [SerializeField] private int _maxHealth = 100;
-    public virtual Stack<Coroutine> AttackMeCoroutines { get; set; }
-    private int _currentHealth;
+    public class HealthHandler : MonoBehaviour
+    {
+        [Header("Health stats")]
+        [SerializeField] private int _maxHealth = 100;
+        public virtual Stack<Coroutine> AttackMeCoroutines { get; set; }
+        private int _currentHealth;
    
-    public virtual int CurrentHealth { get => _currentHealth; set => _currentHealth = value; }
-    public virtual int MaxHealth { get => _maxHealth; set => _maxHealth = value; }
+        public virtual int CurrentHealth { get => _currentHealth; set => _currentHealth = value; }
+        public virtual int MaxHealth { get => _maxHealth; set => _maxHealth = value; }
 
-    public virtual event Action<float> HealthChanged;
-    public virtual event Action<float> Dead;
+        public virtual event Action<float> HealthChanged;
+        public virtual event Action<float> Dead;
 
-    public HealthHandler()
-    {
-        AttackMeCoroutines = new Stack<Coroutine>();
-        _currentHealth = _maxHealth;
-    }
-
-    private void Start()
-    {
-        AttackMeCoroutines = new Stack<Coroutine>();
-        _currentHealth = _maxHealth;
-    }
-
-    public virtual void HealthChange(int health)
-    {
-        _currentHealth += health;
-        if (_currentHealth <= 0 || _currentHealth > _maxHealth)
+        public HealthHandler()
         {
-            Death();
+            AttackMeCoroutines = new Stack<Coroutine>();
+            _currentHealth = _maxHealth;
         }
-        else
-        {
-            var currentHealthAsPercent = (float)_currentHealth / _maxHealth;
-            HealthChanged?.Invoke(currentHealthAsPercent);
-        }
-    }
 
-    public virtual void Death()
-    {
-        HealthChanged?.Invoke(0);
-        foreach (var cor in AttackMeCoroutines)
+        private void Start()
         {
-            StopCoroutine(cor);
+            AttackMeCoroutines = new Stack<Coroutine>();
+            _currentHealth = _maxHealth;
         }
-        Dead?.Invoke(0);
-        Destroy(this);
+
+        public virtual void HealthChange(int health)
+        {
+            _currentHealth += health;
+            if (_currentHealth <= 0 || _currentHealth > _maxHealth)
+            {
+                Death();
+            }
+            else
+            {
+                var currentHealthAsPercent = (float)_currentHealth / _maxHealth;
+                HealthChanged?.Invoke(currentHealthAsPercent);
+            }
+        }
+
+        public virtual void Death()
+        {
+            HealthChanged?.Invoke(0);
+            foreach (var cor in AttackMeCoroutines)
+            {
+                StopCoroutine(cor);
+            }
+            Dead?.Invoke(0);
+            Destroy(this);
+        }
     }
 }

@@ -1,8 +1,9 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
 using System.Collections;
+using UnityEditor;
+using UnityEngine;
 
-namespace Assets.Scripts.Tools
+namespace Tools
 {
     public class Timer : MonoBehaviour
     {
@@ -28,6 +29,11 @@ namespace Assets.Scripts.Tools
         public Coroutine StartTimer(Action action, float repeatTime = 0)
         {
             return StartCoroutine(nameof(StartCoroutineE), (repeatTime, action));
+        }
+        
+        public Coroutine StartTimer(Action action, object param)
+        {
+            return StartCoroutine(nameof(StartCoroutineE), (param, action));
         }
 
         public void StopTimer()

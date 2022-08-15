@@ -1,9 +1,10 @@
-﻿using UnityEngine;
-
-public class HealthHandlerBase : HealthHandler
+﻿namespace Units
 {
-    public void OnWarriorAttack(Warrior warrior)
+    public class HealthHandlerBase : HealthHandler
     {
-        HealthChange(-(int)warrior.Damage);
+        public void OnWarriorAttack(Warrior warrior)
+        {
+            HealthChange(-(int)warrior.Damage);
+        }
     }
 }
