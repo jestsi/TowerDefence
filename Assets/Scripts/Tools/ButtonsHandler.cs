@@ -1,4 +1,3 @@
-using Assets.Scripts.Tools;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,7 +5,6 @@ namespace Tools
 {
     public class ButtonsHandler : MonoBehaviour
     {
-
         public void OnPlayButtonClicked()
         {
             SceneManager.LoadScene((int)ScenesIndexator.Main);
@@ -24,6 +22,7 @@ namespace Tools
             LevelHandler.IsPaused = isPause;
         }
 
+        // dance
         public void OnQuitButtonCliked()
         {
             Application.Quit();
