@@ -144,12 +144,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e04e3852b65a5f543b171f5eb1e2040c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _radiusTriggerColider: {fileID: 1562593252}
   _sizeRadiusTrigger: 6
-  _position: {x: 0, y: 0}
   _damage: 30
   _periodBeforeAttackInSec: 0.1
   _maximumTargets: 1
+  _price: 0
 --- !u!208 &4690950097620925400
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -177,7 +176,7 @@ GameObject:
   - component: {fileID: 55528033136365416}
   m_Layer: 3
   m_Name: "\u0423\u0441\u0442\u0430\u043D\u043E\u0432\u043A\u0430"
-  m_TagString: Untagged
+  m_TagString: Rotating
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

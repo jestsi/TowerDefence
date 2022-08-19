@@ -13,16 +13,16 @@ namespace Tools
 
         public void BackToMainMenu()
         {
+            Time.timeScale = 1;
             SceneManager.LoadScene((int)ScenesIndexator.Menu);
-            Debug.Log("Load main menu scene");
         }
 
-        public void SetPause(bool isPause)
+        public void OnButtonPauseClicked()
         {
-            LevelHandler.IsPaused = isPause;
+            LevelHandler.IsPaused = !LevelHandler.IsPaused;
+            Time.timeScale = LevelHandler.IsPaused ? 0 : 1;
         }
 
-        // dance
         public void OnQuitButtonCliked()
         {
             Application.Quit();

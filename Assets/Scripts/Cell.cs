@@ -1,8 +1,4 @@
-using Assets.Scripts.Tools;
-using System;
-using System.Linq;
 using JetBrains.Annotations;
-using Tools;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -16,15 +12,17 @@ namespace Assets.Scripts
 
     public class Cell : MonoBehaviour
     {
-        [Header("Colors on mouse events")]
-        [SerializeField] private Color _defaoultColor;
+        [Header("Colors on mouse events")] [SerializeField]
+        private Color _defaoultColor;
+
         [SerializeField] private Color _hoverColor;
         [SerializeField] private Color _selectColor;
 
         [SerializeField] private MeshRenderer _meshRenderer;
-        
-        [Header("State info")]
-        [SerializeField] private bool _isEmpty;
+
+        [Header("State info")] [SerializeField]
+        private bool _isEmpty;
+
         [SerializeField] private CellTypeE _cellType;
         [SerializeField] [UsedImplicitly] private bool _canTowerPlace;
         [SerializeField] [UsedImplicitly] private bool _canMinåPlace;
@@ -32,13 +30,30 @@ namespace Assets.Scripts
         [SerializeField] private bool _canSelectThis;
 
         private GameObject _unit;
+        private bool _isSelect;
+
         public int X { get; set; }
         public int Y { get; set; }
         public bool IsEmpty => _isEmpty;
+
+        public bool IsSelect
+        {
+            get => _isSelect;
+            set
+            {
+                _isSelect = value;
+                ChangeColor(value ? SelectColor : DefoultColor);
+            }
+        }
+
         public Color DefoultColor => _defaoultColor;
         public Color HoverColor => _hoverColor;
         public Color SelectColor => _selectColor;
         public CellTypeE CellType => _cellType;
+
+        public bool CanTowerPlace => _canTowerPlace;
+        public bool CanMinePlace => _canMinåPlace;
+        public bool CanSelectThis => _canSelectThis;
 
         private void Start()
         {
@@ -52,7 +67,7 @@ namespace Assets.Scripts
 
         private void Update()
         {
-            if (Physics.Raycast(transform.position, transform.up, out RaycastHit hit, 5f) && 
+            if (Physics.Raycast(transform.position, transform.up, out RaycastHit hit, 5f) &&
                 !hit.collider.isTrigger &&
                 !hit.collider.CompareTag("Ignore Raycast"))
             {
@@ -60,8 +75,8 @@ namespace Assets.Scripts
             }
             else
                 _unit = null;
-            _isEmpty = _unit == null;
 
+            _isEmpty = _unit == null;
         }
 
         private void SetSettingsForOneOfType()
@@ -88,7 +103,6 @@ namespace Assets.Scripts
 
         private void ApplyingSettingsForCellType()
         {
-
         }
 
 #if DEBUG
@@ -105,9 +119,9 @@ namespace Assets.Scripts
             };
 
             Gizmos.color = new Color(Gizmos.color.r, Gizmos.color.g, Gizmos.color.b, alpha);
-            
+
             var position = transform.position;
-            
+
             Gizmos.DrawCube(position, new Vector3(2, .1f, 2));
             Gizmos.color = Color.gray;
             Gizmos.color = new Color(Gizmos.color.r, Gizmos.color.g, Gizmos.color.b, alpha);
@@ -119,8 +133,7 @@ namespace Assets.Scripts
 
         public void ChangeColor(Color color)
         {
-            if (LevelHandler.IsPaused != true && _canSelectThis)
-                _meshRenderer.material.color = color;
+            _meshRenderer.material.color = color;
         }
     }
 }

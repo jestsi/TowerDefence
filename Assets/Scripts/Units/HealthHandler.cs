@@ -6,13 +6,23 @@ namespace Units
 {
     public class HealthHandler : MonoBehaviour
     {
-        [Header("Health stats")]
-        [SerializeField] private int _maxHealth = 100;
+        [Header("Health stats")] [SerializeField]
+        private int _maxHealth = 100;
+
         public virtual Stack<Coroutine> AttackMeCoroutines { get; set; }
         private int _currentHealth;
-   
-        public virtual int CurrentHealth { get => _currentHealth; set => _currentHealth = value; }
-        public virtual int MaxHealth { get => _maxHealth; set => _maxHealth = value; }
+
+        public virtual int CurrentHealth
+        {
+            get => _currentHealth;
+            set => _currentHealth = value;
+        }
+
+        public virtual int MaxHealth
+        {
+            get => _maxHealth;
+            set => _maxHealth = value;
+        }
 
         public virtual event Action<float> HealthChanged;
         public virtual event Action<float> Dead;
@@ -46,10 +56,7 @@ namespace Units
         public virtual void Death()
         {
             HealthChanged?.Invoke(0);
-            foreach (var cor in AttackMeCoroutines)
-            {
-                StopCoroutine(cor);
-            }
+            StopAllCoroutines();
             Dead?.Invoke(0);
             Destroy(this);
         }

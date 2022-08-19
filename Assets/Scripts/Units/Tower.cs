@@ -1,40 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Extensions;
-using UnityEngine;
-
 namespace Units
 {
-    public class Tower : Unit
+    public class Tower : TowerUsing
     {
-        private TowerClass _tower;
-
-        [Header("Tower stats")]
-        [SerializeField] private SphereCollider _radiusTriggerColider;
-        [SerializeField] private float _sizeRadiusTrigger;
-        [SerializeField] private Vector2Int _position;
-        [SerializeField] private float _damage;
-        [SerializeField] private float _periodBeforeAttackInSec;
-        [SerializeField] private int _maximumTargets;
-        private int _currentTargets;
-        private Warrior _target;
-        private Transform _partForRotation;
-
-        private void Start()
-        {
-            _radiusTriggerColider = GetComponent<SphereCollider>();
-            _tower = gameObject.AddComponent<TowerClass>();
-            _tower.Damage = _damage;
-            _tower.PeriodBeforeAttackInSec = _periodBeforeAttackInSec;
-            _tower.Position = _position;
-            _tower.RadiusTriggerZone = _sizeRadiusTrigger;
-            _radiusTriggerColider.radius = _tower.RadiusTriggerZone;
-            _radiusTriggerColider.isTrigger = true;
-        }
-
-        private void OnTriggerEnter(Collider other)
+        /*private void OnTriggerEnter(Collider other)
         {
             SetTarget(other);
         }
@@ -42,16 +10,17 @@ namespace Units
         private void OnTriggerStay(Collider other)
         {
             SetTarget(other);
-        }
+        }*/
 
+        /*
         private void Awake()
         {
             _target = null;
 
             _partForRotation = gameObject.transform.Find("Установка");
-        }
+        }*/
 
-        private void FixedUpdate()
+        /*private void FixedUpdate()
         {
             RotateToWarriorDirection();
         }
@@ -66,9 +35,9 @@ namespace Units
         
             StopCoroutine(warrior.Health.AttackMeCoroutines.Pop());
             --_currentTargets;
-        }
+        }*/
 
-        private void SetTarget(Collider other)
+        /*private void SetTarget(Collider other)
         {
             var warriros = GameObject.FindGameObjectsWithTag("Warrior")
                 .Select(x => x.GetComponent<Warrior>())
@@ -85,10 +54,10 @@ namespace Units
                 --_currentTargets;
                 _target = null;
             };
-            warrior.Health.AttackMeCoroutines.Push(StartCoroutine(nameof(MinusHp), warrior));
-        }
+            warrior.Health.AttackMeCoroutines.Push(StartCoroutine(nameof(ShootInWarrior), warrior));
+        }*/
 
-        private void RotateToWarriorDirection()
+        /*private void RotateToWarriorDirection()
         {
             if (_target == null) return;
 
@@ -96,30 +65,22 @@ namespace Units
             quat.x = quat.z = 0;
 
             _partForRotation.rotation = quat;
-        }
+        }*/
 
-        public IEnumerator MinusHp(Warrior warrior)
+        /*public IEnumerator ShootInWarrior(Warrior warrior)
         {
             while (true)
             {
-                yield return new WaitForSeconds(_tower.PeriodBeforeAttackInSec);
+                yield return new WaitForSeconds(PeriodAttack);
 
                 if (warrior.Health.AttackMeCoroutines.Count == 0)
                     yield break;
 
-                warrior.Health.HealthChange(-(int)_tower.Damage);
+                warrior.Health.HealthChange(-(int)Damage);
             }
-        }
+        }*/
 
-        private void OnDrawGizmosSelected()
-        {
-            Gizmos.color = Color.red;
-
-            Gizmos.DrawRay(_partForRotation.transform.position,
-                -_partForRotation.forward * _sizeRadiusTrigger);
-        }
-
-        private bool CheckBeforeSetTarget(Collider other, IEnumerable<Warrior> warriors, out Warrior warriorEx)
+        /*private bool CheckBeforeSetTarget(Collider other, IEnumerable<Warrior> warriors, out Warrior warriorEx)
         {
             warriorEx = null;
             if (!ExtensionsClasses.IsWarrior(other, out var warrior)) return false;
@@ -127,6 +88,24 @@ namespace Units
             if (_currentTargets >= _maximumTargets) return false;
             warriorEx = warrior;
             return true;
+        }*/
+
+        /*public int Price
+        {
+            get => _price;
+            set => _price = value >= 0 ? value : 0;
         }
+
+        public event UnityAction<int> OnBuy;
+
+        public int CountTargets { get => _currentTargets; set => _currentTargets = value; }
+
+        public int MaximumTargets { get => _maximumTargets; set => _maximumTargets = value; }
+
+        public float PeriodAttack { get => _periodBeforeAttackInSec; set => _periodBeforeAttackInSec = value; }
+
+        public float TriggerRadius { get => _sizeRadiusTrigger; set => _sizeRadiusTrigger = value; }
+        
+        public float Damage { get => _damage; set => _damage = value ; }*/
     }
 }

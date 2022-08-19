@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2579149213810608411}
   - component: {fileID: 2579149213810608410}
   - component: {fileID: 2579149213810608409}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: StatsCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 2579149214178405066}
   - component: {fileID: 2579149214178405108}
   - component: {fileID: -584672089286245409}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Capsule
   m_TagString: Warrior
   m_Icon: {fileID: 0}
@@ -260,12 +260,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2521b50be404e214d84220d4d1530261, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 0.8
   _position: {x: 0, y: 0}
-  _healthWarrior: {fileID: 2579149214178405066}
+  _health: {fileID: 2579149214178405066}
   _damage: 50
-  _attackType: 0
+  _movingType: 1
   _periodBeforeAttackInSecconds: 0.2
+  _agent: {fileID: -584672089286245409}
 --- !u!195 &-584672089286245409
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -299,7 +299,7 @@ GameObject:
   - component: {fileID: 2579149215016517678}
   - component: {fileID: 2579149215016517676}
   - component: {fileID: 2579149215016517679}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -376,7 +376,7 @@ GameObject:
   - component: {fileID: 2579149215458356641}
   - component: {fileID: 2579149215458356647}
   - component: {fileID: 2579149215458356646}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Background (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -20,8 +20,8 @@ namespace Extensions
             return (tuple.Item1 - number, tuple.Item2 - number);
         }
 
-        public static bool IsWarrior(Collider collider) => collider.CompareTag("Warrior");
-        
+        public static bool IsWarrior(this Collider collider) => collider.CompareTag("Warrior");
+
         public static bool IsWarrior(Collider collider, out Warrior warrior)
         {
             var isWarrior = collider.CompareTag("Warrior");

@@ -260,12 +260,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2521b50be404e214d84220d4d1530261, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 0.8
   _position: {x: 0, y: 0}
-  _healthWarrior: {fileID: 2579149214178405066}
-  _damage: 100
-  _attackType: 0
+  _health: {fileID: 2579149214178405066}
+  _damage: 30
+  _movingType: 0
   _periodBeforeAttackInSecconds: 0.2
+  _agent: {fileID: -584672089286245409}
 --- !u!195 &-584672089286245409
 NavMeshAgent:
   m_ObjectHideFlags: 0

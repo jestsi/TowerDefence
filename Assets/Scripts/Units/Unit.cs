@@ -8,7 +8,6 @@ namespace Units
         public virtual int Health { get; set; }
         public virtual float Speed { get; set; }
         public virtual float Damage { get; set; }
-        public virtual AttackType AttackType { get; set; }
         public virtual float PeriodBeforeAttackInSec { get; set; }
         public virtual Vector2Int Position { get; set; }
         public virtual Cell CellOnStateing { get; set; }
@@ -18,7 +17,8 @@ namespace Units
 
         public override int GetHashCode()
         {
-            unchecked {
+            unchecked
+            {
                 var hash = FNVOffsetBasis;
                 hash ^= Health;
                 hash *= FNVPrime;

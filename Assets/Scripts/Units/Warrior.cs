@@ -1,27 +1,31 @@
-﻿using Assets.Scripts;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
 
 namespace Units
 {
-    public enum AttackType
+    public enum WarriorMovingTypeE
     {
-        CloseCombat, // ближний бой
-        RangedCombat // дальний
+        Flying,
+        GroundMove,
+        Gybrid
     }
 
     public class Warrior : Unit
     {
         #region Fields
-        [Header("Warrior stats")]
-        [SerializeField] private Vector2Int _position;
-        [FormerlySerializedAs("_healthWarrior")] [SerializeField] private HealthWarriorHandler _health;
+
+        [Header("Warrior stats")] [SerializeField]
+        private Vector2Int _position;
+
+        [FormerlySerializedAs("_healthWarrior")] [SerializeField]
+        private HealthWarriorHandler _health;
+
         [SerializeField] private float _damage;
-        [SerializeField] private AttackType _attackType;
+        [SerializeField] private WarriorMovingTypeE _movingType;
         [SerializeField] private float _periodBeforeAttackInSecconds;
         [SerializeField] private NavMeshAgent _agent;
-        
+
         private Transform _goal;
         private int _reloadTimeInMS;
         private int _riffleCount;
@@ -30,17 +34,13 @@ namespace Units
         public override float Speed => _agent.speed;
         public override Vector2Int Position => _position;
         public override float Damage => _damage;
-        public override AttackType AttackType => _attackType;
+        public WarriorMovingTypeE MovingType => _movingType;
         public override float PeriodBeforeAttackInSec => _periodBeforeAttackInSecconds;
         public bool InMeShooting => _health.AttackMeCoroutines.Count > 0;
         public bool AtTheDestination { get; set; }
-        public int RiffleCount
-        {
-            get { return _riffleCount; }
-            set { _riffleCount = value; }
-        }
-        public int ReloadTimeInMS { get => _reloadTimeInMS; set => _reloadTimeInMS = value; }
+
         #endregion
+
         private void Start()
         {
             _goal = GameObject.FindGameObjectWithTag("Destination").transform;
@@ -49,34 +49,22 @@ namespace Units
 
             agent.SetDestination(_goal.position);
 
-            // CorrectPosition();
             _health.Dead += Dead;
         }
 
         private void Dead(float obj)
         {
-            while(_health.AttackMeCoroutines.Count > 0)
+            while (_health.AttackMeCoroutines.Count > 0 && _health.AttackMeCoroutines != null)
             {
                 StopCoroutine(_health.AttackMeCoroutines.Pop());
             }
-            
-            Destroy(gameObject);    
+
+            Destroy(gameObject);
         }
 
         private void OnDestroy()
         {
             _health.Dead -= Dead;
         }
-
-        /*
-        private void CorrectPosition()
-        {
-            if (!Physics.Raycast(transform.position, -transform.up, out var hit, 5f)) return;
-            if (hit.collider.isTrigger) return;
-        
-            CellOnStateing = hit.collider.GetComponent<Cell>();
-
-            Position = _position = new Vector2Int(CellOnStateing.X, CellOnStateing.Y);
-        }*/
     }
 }
